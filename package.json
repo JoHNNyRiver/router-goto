@@ -1,0 +1,41 @@
+{
+  "name": "router-goto",
+  "version": "1.0.0",
+  "description": "Router-goTo é uma biblioteca de abstração que auxilia em aplicações sua SPA usando o constructor XMLHttpRequest com Ajaxabstractjs",
+  "main": "routergoto.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "./node_modules/.bin/eslint source/*.js",
+    "prepush": "npm run lint"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JoHNNyRiver/router-goto.git"
+  },
+  "keywords": [
+    "route",
+    "router",
+    "router-goto",
+    "router",
+    "goto"
+  ],
+  "author": "João Ribeiro <jlribeiroaugusto@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/JoHNNyRiver/router-goto/issues"
+  },
+  "homepage": "https://github.com/JoHNNyRiver/router-goto#readme",
+  "dependencies": {
+    "ajaxabstractjs": "^2.1.0",
+    "mustache": "^2.3.0"
+  },
+  "devDependencies": {
+    "eslint": "^4.14.0",
+    "eslint-config-standard": "^11.0.0-beta.0",
+    "eslint-plugin-import": "^2.8.0",
+    "eslint-plugin-node": "^5.2.1",
+    "eslint-plugin-promise": "^3.6.0",
+    "eslint-plugin-standard": "^3.0.1",
+    "husky": "^0.14.3"
+  }
+}
