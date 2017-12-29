@@ -20,7 +20,7 @@ class Router {
     this._route = {}
     this._request = {}
     this._response = {}
-    this._links = [...document.querySelectorAll('a')]
+    this._links = [...document.querySelectorAll('a')].filter(item => !item.hasAttribute('target'))
 
     this.config({})
   }
@@ -59,6 +59,7 @@ class Router {
     const url = uri.replace(/\/:.+/gim, '')
 
     this._request['param'] = treatedUri
+    this._response['style'] = (element, object) => Helper.style(element, object)
     this._route[url] = callback
 
     Ajax.get(url + this._engine, (res, err) => {

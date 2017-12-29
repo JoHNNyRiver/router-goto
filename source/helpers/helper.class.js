@@ -9,7 +9,9 @@ class Helper {
   * @constructor
   */
   constructor () {
-    if (this instanceof Helper) throw new Error('This class can\'t be instanced')
+    if (this instanceof Helper) {
+      throw new Error('This class can\'t be instanced')
+    }
   }
 
   /**
@@ -53,6 +55,26 @@ class Helper {
     document.querySelector(insert).innerHTML = html
     return this
   }
+
+  /**
+   * This Method help at do style on element more simple en routes defined
+   * @param  {string} element take the string adn includes on method querySelector
+   * @param  {object} object  take the definition of the styles en transform in array
+   * @return {object} return the Helper class (chain method)
+   */
+  static style (element, object) {
+    const objectToArrayKeys = Object.keys(object)
+    const objectToArrayValue = Object.values(object)
+
+    objectToArrayKeys.forEach((item, index) => {
+      document.querySelector(element).style[item] = objectToArrayValue[index]
+    })
+
+    return this
+  }
 }
 
+/**
+* @module Helper
+*/
 export default Helper
