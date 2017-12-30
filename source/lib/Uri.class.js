@@ -43,7 +43,7 @@ class Uri {
     // const { pathname } = window.location
     const { sessionStorage } = window
 
-    if (sessionStorage.hasOwnProperty(href)) {
+    if (sessionStorage.hasOwnProperty(href) && this._route.hasOwnProperty(href)) {
       this._response['render'] = (template, context) => Helper.render(template, context, this._insert)
       return this._route[this._uri](sessionStorage.getItem(href), this._response, this._request)
     }
