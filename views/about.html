@@ -6,7 +6,17 @@
 </head>
 <body>
 	<main>
-		<h1>About</h1>
+		<h1 id="title">About</h1>
+		<a href="/">home</a>
+		<a target="_blank" href="//www.google.com">google</a>
 	</main>
+
+<script id="resources">
+function show (el) {
+  console.log('el.target.innerHTML')
+}
+
+document.getElementById('title').addEventListener('click', show())
+</script>
 </body>
 </html>

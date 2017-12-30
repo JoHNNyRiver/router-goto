@@ -1,4 +1,3 @@
-
 /**
  * If instanced will throw an error
  * @class
@@ -43,7 +42,7 @@ class Helper {
    * @param  {strin} get the string returned of the route
    * @param  {object} get the context defined by user
    * @param  {elemnt} insert the return of Mustache lib the element defined by user
-   * @return {object} this class
+   * @return {object} return this class (chain method)
    */
   static render (template, context, insert) {
     if (typeof Mustache === 'undefined') {
@@ -51,7 +50,7 @@ class Helper {
       throw err.message
     }
 
-    const html = Mustache.to_html(template, context)
+    const html = window.Mustache.to_html(template, context)
     document.querySelector(insert).innerHTML = html
     return this
   }

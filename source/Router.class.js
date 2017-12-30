@@ -1,4 +1,4 @@
-import Ajax from '/node_modules/ajaxabstractjs/ajaxabstractjs.js'
+import Uri from './lib/Uri.class.js'
 import Helper from './helpers/helper.class.js'
 
 /**
@@ -56,29 +56,17 @@ class Router {
   */
   goTo (uri, callback) {
     const treatedUri = Helper.verifyUri(uri, this._linkHref())
-    const url = uri.replace(/\/:.+/gim, '')
+    const url = uri.replace(/^\/:.+\w$/gim, '')
 
     this._request['param'] = treatedUri
     this._response['style'] = (element, object) => Helper.style(element, object)
     this._route[url] = callback
 
-    Ajax.get(url + this._engine, (res, err) => {
-      if (err && !this._notFound && this._route.hasOwnProperty(url)) {
-        this._notFound = err.message
-        this._response.staus = err.status
-        this._response['render'] = (template, context) => Helper.render(template, context, this._insert)
-        document.title = '404 - NOT FOUND'
+    const AuxRouter = new Uri(url, this._route, this._engine, this._notFound, this._target, this._response, this._insert)
 
-        return this._route[url](this._notFound, this._response, this._request)
-      }
-
-      const content = res.parsed.querySelector(this._target).innerHTML
-      document.title = res.parsed.title
-
-      this._response['render'] = (template, context) => Helper.render(template, context, this._insert)
-
-      return this._route[url](content, this._response, this._request)
-    })
+    this._links
+      .filter(item => !item.hasAttribute('target'))
+      .forEach(link => link.addEventListener('click', event => AuxRouter._event(event)))
   }
 }
 
