@@ -10,14 +10,14 @@ class Uri {
   * Properties necessery to make this lib works
   * @constructor
   */
-  constructor (uri, route, engine, notFound, target, response, insert) {
-    this._route = route
+  constructor (uri, engine, notFound, target, response, insert) {
     this._uri = uri
     this._engine = engine
     this._notFound = notFound
     this._target = target
     this._response = response
     this._insert = insert
+    this._route = {}
   }
 
   /**
@@ -25,17 +25,19 @@ class Uri {
   * @param  {event} event get of the information on click event
   * @return {object} return the method informed on goTo method
   */
-  _event (event) {
+  _event (event, callback) {
     event.preventDefault()
+
+    this._route[this._uri] = callback
 
     setTimeout(() => {
       Array.prototype
         .filter.call(document.querySelectorAll(`${this._target} a`), item => !item.hasAttribute('target'))
-        .forEach(link => link.addEventListener('click', event => this._event(event)))
+        .forEach(link => link.addEventListener('click', event => this._event(event, callback)))
     }, 500)
 
     const href = event.target.getAttribute('href')
-    const route = this._route.hasOwnProperty(href)
+    const router = this._route.hasOwnProperty(href)
     const url = (href === '/') ? '/' : href + this._engine
 
     // const { pathname } = window.location
@@ -43,10 +45,10 @@ class Uri {
 
     if (sessionStorage.hasOwnProperty(href)) {
       this._response['render'] = (template, context) => Helper.render(template, context, this._insert)
-      return this._route[href](sessionStorage.getItem(href), this._response, this._request)
+      return this._route[this._uri](sessionStorage.getItem(href), this._response, this._request)
     }
 
-    if (route) {
+    if (router) {
       Ajax.get(url, (res, err) => {
         if (err && !this._notFound) {
           this._notFound = err.message

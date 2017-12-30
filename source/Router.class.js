@@ -17,11 +17,7 @@ class Router {
   * @property {objectt} _response - store the response of the request end method render
   */
   constructor () {
-    this._route = {}
-    this._request = {}
-    this._response = {}
     this._links = [...document.querySelectorAll('a')].filter(item => !item.hasAttribute('target'))
-
     this.config({})
   }
 
@@ -58,15 +54,17 @@ class Router {
     const treatedUri = Helper.verifyUri(uri, this._linkHref())
     const url = uri.replace(/^\/:.+\w$/gim, '')
 
-    this._request['param'] = treatedUri
-    this._response['style'] = (element, object) => Helper.style(element, object)
-    this._route[url] = callback
+    const request = {}
+    const response = {}
 
-    const AuxRouter = new Uri(url, this._route, this._engine, this._notFound, this._target, this._response, this._insert)
+    request['param'] = treatedUri
+    response['style'] = (element, object) => Helper.style(element, object)
+
+    const AuxRouter = new Uri(url, this._engine, this._notFound, this._target, response, this._insert)
 
     this._links
       .filter(item => !item.hasAttribute('target'))
-      .forEach(link => link.addEventListener('click', event => AuxRouter._event(event)))
+      .forEach(link => link.addEventListener('click', event => AuxRouter._event(event, callback)))
   }
 }
 
