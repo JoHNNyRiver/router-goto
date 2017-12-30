@@ -63,7 +63,6 @@ class Router {
     const AuxRouter = new Uri(url, this._engine, this._notFound, this._target, response, this._insert)
 
     this._links
-      .filter(item => !item.hasAttribute('target'))
       .forEach(link => link.addEventListener('click', event => AuxRouter._event(event, callback)))
   }
 }
