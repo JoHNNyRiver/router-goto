@@ -21,6 +21,35 @@ class Uri {
   }
 
   /**
+  * This method verify the data before the trigger Ajaxabstract lib
+  * @param  {object} res
+  * @param  {object} err
+  * @param  {string} href
+  * @param  {object} sessionStorage
+  * @param  {object} history
+  * @return {function}
+  */
+  verifyData (res, err, href, sessionStorage, history) {
+    if (err && !this._notFound) {
+      this._notFound = err.message
+      this._response.staus = err.status
+      this._response['render'] = (template, context) => Helper.render(template, context, this._insert)
+      document.title = '404 - NOT FOUND'
+
+      return this._route[href](this._notFound, this._response, this._request)
+    }
+
+    const content = res.parsed.querySelector(this._target).innerHTML
+    document.title = res.parsed.title
+
+    sessionStorage.setItem(href, JSON.stringify({content: content, title: res.parsed.title}))
+    history.pushState({href: href}, res.parsed.title, this._uri)
+
+    this._response['render'] = (template, context) => Helper.render(template, context, this._insert)
+    return this._route[href](content, this._response, this._request)
+  }
+
+  /**
   * This method it main methos taht get the information necessary to continue app running
   * @param  {event} event get of the information on click event
   * @return {object} return the method informed on goTo method
@@ -40,39 +69,60 @@ class Uri {
     const router = this._route.hasOwnProperty(href)
     const url = (href === '/') ? '/' : href + this._engine
 
-    // const { pathname } = window.location
-    const { sessionStorage } = window
+    const { sessionStorage, history, location } = window
+    const { pathname } = location
 
-    if (sessionStorage.hasOwnProperty(href) && router) {
+    if (sessionStorage.hasOwnProperty(href) && router && href !== pathname) {
+      const { content, title } = JSON.parse(sessionStorage.getItem(href))
+
+      document.title = title
+
+      history.pushState({href: href}, title, this._uri)
+
       this._response['render'] = (template, context) => Helper.render(template, context, this._insert)
-      return this._route[this._uri](sessionStorage.getItem(href), this._response, this._request)
+      return this._route[this._uri](content, this._response, this._request)
     }
 
-    if (router) {
-      Ajax.get(url, (res, err) => {
-        if (err && !this._notFound) {
-          this._notFound = err.message
-          this._response.staus = err.status
-          this._response['render'] = (template, context) => Helper.render(template, context, this._insert)
-          document.title = '404 - NOT FOUND'
+    if (router && href !== pathname) {
+      Ajax.get(url, (res, err) => this.verifyData(res, err, href, sessionStorage, history))
+    }
+  }
 
-          return this._route[href](this._notFound, this._response, this._request)
-        }
+  /**
+  * This method it's resposible of the capture state event and execute the route defined
+  * @param  {Function} callback
+  * @return {Function}
+  */
+  stateEvent (callback) {
+    window.addEventListener('popstate', event => {
+      const href = (!event.state) ? '/' : event.state.href
 
-        const content = res.parsed.querySelector(this._target).innerHTML
-        document.title = res.parsed.title
+      setTimeout(() => {
+        Array.prototype
+          .filter.call(document.querySelectorAll(`${this._target} a`), item => !item.hasAttribute('target'))
+          .forEach(link => link.addEventListener('click', event => this._event(event, callback)))
+      }, 500)
+
+      const router = this._route.hasOwnProperty(href)
+      const url = (href === '/') ? '/' : href + this._engine
+
+      const { sessionStorage, history } = window
+
+      if (sessionStorage.hasOwnProperty(href) && router) {
+        const { content, title } = JSON.parse(sessionStorage.getItem(href))
+
+        document.title = title
 
         this._response['render'] = (template, context) => Helper.render(template, context, this._insert)
-
-        sessionStorage.setItem(href, content)
-
         return this._route[href](content, this._response, this._request)
-      })
-    }
+      }
+
+      if (router) Ajax.get(url, (res, err) => this.verifyData(res, err, href, sessionStorage, history))
+    })
   }
 }
 
 /**
- * @module Uri;
- */
+* @module Uri;
+*/
 export default Uri

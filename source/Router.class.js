@@ -60,7 +60,9 @@ class Router {
     request['param'] = treatedUri
     response['style'] = (element, object) => Helper.style(element, object)
 
-    const AuxRouter = new Uri(url, this._engine, this._notFound, this._target, response, this._insert)
+    const AuxRouter = new Uri(url, this._engine, this._notFound, this._target, response, this._insert, callback)
+
+    AuxRouter.stateEvent(callback)
 
     this._links
       .forEach(link => link.addEventListener('click', event => AuxRouter._event(event, callback)))
