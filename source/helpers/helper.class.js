@@ -5,7 +5,7 @@
 class Helper {
   /**
   * will throw an error if instanced
-  * @constructor
+  * @constructs
   */
   constructor () {
     if (this instanceof Helper) {

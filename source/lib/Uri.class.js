@@ -8,7 +8,15 @@ import Helper from '../helpers/helper.class.js'
 class Uri {
   /**
   * Properties necessery to make this lib works
-  * @constructor
+  * @property {String} _uri
+  * @property {string} _engine
+  * @property {string} _notFound
+  * @property {strign} _target
+  * @property {object} _response
+  * @property {string} _insert
+  * @property {object} _route
+  *
+  * @constructs
   */
   constructor (uri, engine, notFound, target, response, insert) {
     this._uri = uri

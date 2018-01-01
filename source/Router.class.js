@@ -11,10 +11,8 @@ import Helper from './helpers/helper.class.js'
 class Router {
   /**
   * init and set the propertys necessary for this libary
-  * @constructor
-  * @property {object} _route - the object to store the request ans exectutation the callback
-  * @property {object} _request - store the param of exist in goTo method
-  * @property {objectt} _response - store the response of the request end method render
+  * @constructs
+  * @property {object} _links - NodeList of hypelinks
   */
   constructor () {
     this._links = [...document.querySelectorAll('a')].filter(item => !item.hasAttribute('target'))
