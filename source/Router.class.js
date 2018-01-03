@@ -26,12 +26,12 @@ class Router {
   * @param  {object} context
   */
   preRender (uri, context) {
-  	const { location } = window
-  	const template = document.querySelector(this._insert).innerHTML
+    const { location } = window
+    const template = document.querySelector(this._insert).innerHTML
 
-  	if (uri === location.pathname) {
-  		Helper.render(template, context, this._insert)
-  	}
+    if (uri === location.pathname) {
+      Helper.render(template, context, this._insert)
+    }
   }
 
   /**
