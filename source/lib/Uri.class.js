@@ -78,7 +78,7 @@ class Uri {
 
     if (this._request.param) {
     	Object.values(this._request.param).forEach(props => {
-    		const newHref = href.replace(new RegExp('/' + props), '')
+    		const newHref = href.replace(new RegExp(`/${props}`), '')
     		href = newHref
     	})
     }
@@ -103,10 +103,6 @@ class Uri {
 
     if (router && href !== pathname) {
       Ajax.get(url, (res, err) => this.verifyData(res, err, href, sessionStorage, history))
-    }
-
-    if (!sessionStorage.hasOwnProperty(href) && !router && href !== pathname) {
-    	location.assign(event.target.href)
     }
   }
 
