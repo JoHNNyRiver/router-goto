@@ -65,7 +65,7 @@ class Router {
   */
   goTo (uri, callback) {
     const treatedUri = Helper.verifyUri(uri, this._linkHref())
-    const url = uri.replace(/\:\w.+/gim, '')
+    const url = uri.replace(/:\w.+/gim, '')
 
     const request = {}
     const response = {}
