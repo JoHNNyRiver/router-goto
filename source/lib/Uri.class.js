@@ -38,7 +38,7 @@ class Uri {
   * @param  {object} history
   * @return {function}
   */
-  verifyData (res, err, href, sessionStorage, history) {
+  _verifyData (res, err, href, sessionStorage, history) {
     if (err && !this._notFound) {
       this._notFound = err.message
       this._response.staus = err.status
@@ -86,10 +86,8 @@ class Uri {
     const router = this._route.hasOwnProperty(href)
     const url = (href === '/') ? '/' : this._uri + this._engine
 
-
     const { sessionStorage, history, location } = window
     const { pathname } = location
-
 
     if (sessionStorage.hasOwnProperty(href) && router && href !== pathname) {
       const { content, title } = JSON.parse(sessionStorage.getItem(href))
@@ -102,7 +100,7 @@ class Uri {
     }
 
     if (router && href !== pathname) {
-      Ajax.get(url, (res, err) => this.verifyData(res, err, href, sessionStorage, history))
+      Ajax.get(url, (res, err) => this._verifyData(res, err, href, sessionStorage, history))
     }
   }
 
@@ -111,7 +109,7 @@ class Uri {
   * @param  {Function} callback
   * @return {Function}
   */
-  stateEvent (callback) {
+  _stateEvent (callback) {
     window.addEventListener('popstate', event => {
       const href = (!event.state) ? '/' : event.state.href
 

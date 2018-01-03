@@ -20,6 +20,21 @@ class Router {
   }
 
   /**
+  * executeRender its a helper method to used when exists interpolation on de document
+  * will help the user show the data after load
+  * @param  {String} uri
+  * @param  {object} context
+  */
+  preRender (uri, context) {
+  	const { location } = window
+  	const template = document.querySelector(this._insert).innerHTML
+
+  	if (uri === location.pathname) {
+  		Helper.render(template, context, this._insert)
+  	}
+  }
+
+  /**
   * @return {string} return the href
   */
   _linkHref () {
@@ -60,7 +75,7 @@ class Router {
 
     const AuxRouter = new Uri(url, this._engine, this._notFound, this._target, response, this._insert, request)
 
-    AuxRouter.stateEvent(callback)
+    AuxRouter._stateEvent(callback)
 
     this._links
       .forEach(link => link.addEventListener('click', event => AuxRouter._event(event, callback)))

@@ -45,11 +45,6 @@ class Helper {
    * @return {object} return this class (chain method)
    */
   static render (template, context, insert) {
-    if (typeof Mustache === 'undefined') {
-      const err = new Error('This application needs of Mustache library. Please, includes the library to continue')
-      throw err.message
-    }
-
     const html = window.Mustache.to_html(template, context)
     document.querySelector(insert).innerHTML = html
     return this

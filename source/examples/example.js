@@ -25,6 +25,10 @@ route.goTo('/views/contact', (data, res, req) => {
 
   setTimeout(() => {
     res.style('main', {opacity: 1})
-    res.render(data)
+    res.render(data, {contact: 'Aqui está sendo interpolado com a lib Mustache'})
   }, 300)
+})
+
+route.preRender('/views/contact', {
+  contact: 'Aqui está sendo interpolado com a lib Mustache'
 })
