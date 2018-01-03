@@ -77,10 +77,10 @@ class Uri {
     let href = event.target.getAttribute('href')
 
     if (this._request.param) {
-    	Object.values(this._request.param).forEach(props => {
-    		const newHref = href.replace(new RegExp(`/${props}`), '')
-    		href = newHref
-    	})
+      Object.values(this._request.param).forEach(props => {
+        const newHref = href.replace(new RegExp(`/${props}`), '')
+        href = newHref
+      })
     }
 
     const router = this._route.hasOwnProperty(href)
