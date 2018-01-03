@@ -5,18 +5,20 @@
 	<title>About</title>
 </head>
 <body>
+	<ul>
+		<li><a href="/">Home</a></li>
+		<li><a href="/views/about">About</a></li>
+		<li><a href="/views/contact">Contact</a></li>
+	</ul>
+
 	<main>
 		<h1 id="title">About</h1>
 		<a href="/">home</a>
 		<a target="_blank" href="//www.google.com">google</a>
 	</main>
 
-<script id="resources">
-function show (el) {
-  console.log('el.target.innerHTML')
-}
-
-document.getElementById('title').addEventListener('click', show())
+	<script async src="../node_modules/mustache/mustache.min.js"></script>
+	<script defer type="module" src="../source/examples/example.js"></script>
 </script>
 </body>
 </html>

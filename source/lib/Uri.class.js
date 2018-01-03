@@ -1,4 +1,4 @@
-import Ajax from '/node_modules/ajaxabstractjs/ajaxabstractjs.js'
+import Ajax from '../../node_modules/ajaxabstractjs/ajaxabstractjs.js'
 import Helper from '../helpers/helper.class.js'
 
 /**
@@ -18,12 +18,13 @@ class Uri {
   *
   * @constructs
   */
-  constructor (uri, engine, notFound, target, response, insert) {
+  constructor (uri, engine, notFound, target, response, insert, request) {
     this._uri = uri
     this._engine = engine
     this._notFound = notFound
     this._target = target
     this._response = response
+    this._request = request
     this._insert = insert
     this._route = {}
   }
@@ -73,16 +74,25 @@ class Uri {
         .forEach(link => link.addEventListener('click', event => this._event(event, callback)))
     }, 500)
 
-    const href = event.target.getAttribute('href')
+    let href = event.target.getAttribute('href')
+
+    if (this._request.param) {
+    	Object.values(this._request.param).forEach(props => {
+    		const newHref = href.replace(new RegExp('/' + props), '')
+    		href = newHref
+    	})
+    }
+
     const router = this._route.hasOwnProperty(href)
-    const url = (href === '/') ? '/' : href + this._engine
+    const url = (href === '/') ? '/' : this._uri + this._engine
+
 
     const { sessionStorage, history, location } = window
     const { pathname } = location
 
+
     if (sessionStorage.hasOwnProperty(href) && router && href !== pathname) {
       const { content, title } = JSON.parse(sessionStorage.getItem(href))
-
       document.title = title
 
       history.pushState({href: href}, title, this._uri)
@@ -93,6 +103,10 @@ class Uri {
 
     if (router && href !== pathname) {
       Ajax.get(url, (res, err) => this.verifyData(res, err, href, sessionStorage, history))
+    }
+
+    if (!sessionStorage.hasOwnProperty(href) && !router && href !== pathname) {
+    	location.assign(event.target.href)
     }
   }
 
