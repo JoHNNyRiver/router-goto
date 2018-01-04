@@ -22,7 +22,6 @@ class Router {
   /**
   * executeRender its a helper method to used when exists interpolation on de document
   * will help the user show the data after load
-  * @public
   * @param  {String} uri
   * @param  {object} context
   */
@@ -36,7 +35,6 @@ class Router {
   }
 
   /**
-   * @private
   * @return {string} return the href
   */
   _linkHref () {
@@ -50,7 +48,6 @@ class Router {
   }
 
   /**
-  * @public
   * @param  {String} the target to defined per default like body
   * @param  {string} the string defined if 404 heppen init value it's null
   * @param  {Boolean} if true the goTo method be executed on click event
@@ -63,13 +60,12 @@ class Router {
   }
 
   /**
-  * @public
   * @param  {String} the uri informed
   * @param  {Function} the callback function
   */
   goTo (uri, callback) {
     const treatedUri = Helper.verifyUri(uri, this._linkHref())
-    const url = uri.replace(/:\w.+/gim, '')
+    const url = uri.replace(/\/:\w.+/gim, '')
 
     const request = {}
     const response = {}

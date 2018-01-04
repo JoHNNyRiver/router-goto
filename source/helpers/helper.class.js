@@ -22,6 +22,8 @@ class Helper {
     const newUri = uri.replace(/\//g, '').split(':')
     const linkArray = link.split('/')
 
+    console.log(link);
+
     const regexp = /:\w+/gmi
     const total = newUri.length - 1
     const param = {}

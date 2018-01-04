@@ -77,14 +77,12 @@ class Uri {
     let href = event.target.getAttribute('href')
 
     if (this._request.param) {
-      Object.values(this._request.param).forEach(props => {
-        const newHref = href.replace(new RegExp(`/${props}`), '')
-        href = newHref
-      })
+      const newHref = href.replace(/\/\d/gim, '')
+      href = newHref
     }
 
     const router = this._route.hasOwnProperty(href)
-    const url = (href === '/') ? '/' : this._uri + this._engine
+    const url = (href === '/' || href === '') ? '/' : href + this._engine
 
     const { sessionStorage, history, location } = window
     const { pathname } = location
@@ -96,7 +94,7 @@ class Uri {
       history.pushState({href: href}, title, this._uri)
 
       this._response['render'] = (template, context) => Helper.render(template, context, this._insert)
-      return this._route[this._uri](content, this._response, this._request)
+      return this._route[href](content, this._response, this._request)
     }
 
     if (router && href !== pathname) {
@@ -120,7 +118,7 @@ class Uri {
       }, 500)
 
       const router = this._route.hasOwnProperty(href)
-      const url = (href === '/') ? '/' : href + this._engine
+      const url = (href === '/' || href === '') ? '/' : href + this._engine
 
       const { sessionStorage, history } = window
 
