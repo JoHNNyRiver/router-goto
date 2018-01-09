@@ -16,14 +16,12 @@ route.goTo('/', (data, res, req) => {
   }, 300)
 })
 
-route.goTo('/views/about/:id', (data, res, req) => {
-  console.log(req.param.id)
+route.goTo('/views/about', (data, res, req) => {
   res.render(data)
 })
 
-route.goTo('/views/contact/:id', (data, res, req) => {
+route.goTo('/views/contact', (data, res, req) => {
   res.style('main', {opacity: 0, transition: 'opacity .3s'})
-  console.log(req.param.id)
 
   setTimeout(() => {
     res.style('main', {opacity: 1})

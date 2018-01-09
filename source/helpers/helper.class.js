@@ -14,40 +14,13 @@ class Helper {
   }
 
   /**
-  * @param  {String} verify if uri don't contains parameter
-  * @param  {uri} replaces uri if contains parameters in uri
-  * @return {string} return string treadted
-  */
-  static verifyUri (uri, link) {
-    const newUri = uri.replace(/\//g, '').split(':')
-    const linkArray = link.split('/')
-
-    console.log(link);
-
-    const regexp = /:\w+/gmi
-    const total = newUri.length - 1
-    const param = {}
-
-    linkArray.splice(0, linkArray.length - total)
-    newUri.shift()
-
-    if (regexp.test(uri)) {
-      linkArray.forEach((item, index) => {
-        param[newUri[index]] = linkArray[index]
-      })
-
-      return param
-    }
-  }
-
-  /**
    * @param  {strin} get the string returned of the route
    * @param  {object} get the context defined by user
    * @param  {elemnt} insert the return of Mustache lib the element defined by user
    * @return {object} return this class (chain method)
    */
   static render (template, context, insert) {
-    const html = window.Mustache.to_html(template, context)
+    const html = Mustache.to_html(template, context)
     document.querySelector(insert).innerHTML = html
     return this
   }

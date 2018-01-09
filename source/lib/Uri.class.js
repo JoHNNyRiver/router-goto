@@ -18,13 +18,12 @@ class Uri {
   *
   * @constructs
   */
-  constructor (uri, engine, notFound, target, response, insert, request) {
+  constructor (uri, engine, notFound, target, response, insert) {
     this._uri = uri
     this._engine = engine
     this._notFound = notFound
     this._target = target
     this._response = response
-    this._request = request
     this._insert = insert
     this._route = {}
   }
@@ -74,12 +73,7 @@ class Uri {
         .forEach(link => link.addEventListener('click', event => this._event(event, callback)))
     }, 500)
 
-    let href = event.target.getAttribute('href')
-
-    if (this._request.param) {
-      const newHref = href.replace(/\/\d/gim, '')
-      href = newHref
-    }
+    const href = event.target.getAttribute('href')
 
     const router = this._route.hasOwnProperty(href)
     const url = (href === '/' || href === '') ? '/' : href + this._engine
