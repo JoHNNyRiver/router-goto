@@ -53,7 +53,6 @@ class Router {
   goTo (uri, callback) {
     const response = {}
 
-
     response['style'] = (element, object) => Helper.style(element, object)
 
     const AuxRouter = new Uri(uri, this._engine, this._notFound, this._target, response, this._insert)
